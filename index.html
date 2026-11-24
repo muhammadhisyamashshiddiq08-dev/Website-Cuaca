@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMKG - Informasi Cuaca & Geofisika</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <!-- Leaflet CSS untuk Peta -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOP BAR (Jam & Tanggal) -->
+    <div class="top-bar bg-dark text-white py-1">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="small"><i class="fas fa-calendar-alt me-1"></i> <span id="currentDate">Memuat...</span></div>
+            <div class="small"><i class="fas fa-clock me-1"></i> <span id="currentTime">00:00:00</span> WIB</div>
+        </div>
+    </div>
+
+    <!-- HEADER / LOGO -->
+    <header class="bg-white py-3 border-bottom">
+        <div class="container d-flex align-items-center">
+            <img src="logo.jpg" height="100"
+                 alt="Logo BMKG" 
+                 class="me-3">
+            <div>
+                <h4 class="mb-0 fw-bold text-navy">BMKG</h4>
+                <p class="mb-0 text-muted small">Badan Meteorologi, Klimatologi, dan Geofisika</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVBAR FIXED-TOP -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-navy fixed-top" id="mainNav">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto" id="navMenu">
+                    <li class="nav-item"><a class="nav-link active" href="#hero">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#prakiraan">Prakiraan Cuaca</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#big-cities">Kota Besar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#all-cities">Semua Kota</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gempa">Gempa Bumi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+                </ul>
+                <form class="d-flex" id="searchForm">
+                    <input class="form-control me-2" type="search" id="cityInput" placeholder="Cari Kota..." aria-label="Search">
+                    <button class="btn btn-warning text-dark fw-bold" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MARQUEE PERINGATAN -->
+    <div class="bg-warning text-dark py-1">
+        <div class="container">
+            <marquee behavior="scroll" direction="left" class="fw-bold small">
+                <i class="fas fa-exclamation-triangle me-2"></i> PERINGATAN DINI: Waspada potensi hujan lebat disertai petir di wilayah Jabodetabek sore hingga malam.
+            </marquee>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-section">
+        <div class="hero-parallax-bg" data-parallax-speed="0.5"></div>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-floating">
+            <div class="cloud cloud-1" data-parallax-speed="0.3"><i class="fas fa-cloud"></i></div>
+            <div class="cloud cloud-2" data-parallax-speed="0.6"><i class="fas fa-cloud"></i></div>
+            <div class="cloud cloud-3" data-parallax-speed="0.4"><i class="fas fa-cloud"></i></div>
+        </div>
+
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-white">
+                    <span class="badge bg-warning text-dark mb-3 px-3 py-2" data-aos="fade-down">
+                        <i class="fas fa-shield-alt me-1"></i> Sumber Terpercaya
+                    </span>
+                    <h1 class="display-4 fw-bold mb-3" data-aos="fade-right">
+                        Informasi Cuaca <span class="text-warning">Real-Time</span> untuk Indonesia
+                    </h1>
+                    <p class="lead mb-4" data-aos="fade-right" data-aos-delay="100">
+                        Pantau cuaca, prakiraan 5 hari kedepan, dan informasi gempa bumi dari BMKG. 
+                        Akurat, cepat, dan dapat diandalkan untuk seluruh wilayah Indonesia.
+                    </p>
+                    <div class="d-flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="200">
+                        <a href="#prakiraan" class="btn btn-warning btn-lg fw-bold px-4 text-dark">
+                            <i class="fas fa-cloud-sun me-2"></i>Cek Cuaca Sekarang
+                        </a>
+                        <a href="#all-cities" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-map-marked-alt me-2"></i>Semua Kota
+                        </a>
+                    </div>
+
+                    <div class="row mt-5 text-center" data-aos="fade-up" data-aos-delay="300">
+                        <div class="col-4">
+                            <h3 class="fw-bold text-warning mb-0">514</h3>
+                            <small>Kota/Kabupaten</small>
+                        </div>
+                        <div class="col-4 border-start border-end border-light">
+                            <h3 class="fw-bold text-warning mb-0">24/7</h3>
+                            <small>Update Real-Time</small>
+                        </div>
+                        <div class="col-4">
+                            <h3 class="fw-bold text-warning mb-0">38</h3>
+                            <small>Provinsi</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
+                    <div class="hero-weather-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Lokasi Terkini</small>
+                                    <h4 class="fw-bold text-navy mb-0 mt-1" id="heroCity">Jakarta</h4>
+                                </div>
+                                <span class="badge bg-success">
+                                    <i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>Live
+                                </span>
+                            </div>
+                            
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h1 class="display-3 fw-bold text-navy mb-0" id="heroTemp">32°C</h1>
+                                    <p class="text-muted mb-0" id="heroDesc">Mendung</p>
+                                </div>
+                                <i class="fas fa-cloud hero-weather-icon" id="heroIcon"></i>
+                            </div>
+
+                            <hr class="my-3">
+
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <i class="fas fa-tint text-primary mb-1"></i>
+                                    <p class="small text-muted mb-0">Lembap</p>
+                                    <strong id="heroHumidity">50%</strong>
+                                </div>
+                                <div class="col-4 border-start border-end">
+                                    <i class="fas fa-wind text-info mb-1"></i>
+                                    <p class="small text-muted mb-0">Angin</p>
+                                    <strong id="heroWind">1.6 km/j</strong>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fas fa-compress text-warning mb-1"></i>
+                                    <p class="small text-muted mb-0">Tekanan</p>
+                                    <strong id="heroPressure">1012</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-down" data-aos="fade-up" data-aos-delay="500">
+            <a href="#prakiraan" class="text-white">
+                <i class="fas fa-chevron-down fa-2x bounce"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- SECTION PRAKIRAAN CUACA -->
+    <section id="prakiraan" class="py-5 bg-light">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                <h4 class="fw-bold text-navy mb-0" data-aos="fade-right">
+                    <i class="fas fa-cloud-sun me-2"></i>Prakiraan Cuaca Terkini
+                </h4>
+                <span class="badge bg-navy" id="lastUpdate" data-aos="fade-left">Update: --</span>
+            </div>
+            
+            <div class="row" id="weatherResult">
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-navy" role="status"></div>
+                    <p class="mt-2 text-muted">Memuat data cuaca...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION PRAKIRAAN 5 HARI -->
+    <section class="py-5">
+        <div class="container">
+            <h4 class="fw-bold text-navy mb-4 border-bottom pb-2" data-aos="fade-right">
+                <i class="fas fa-calendar-week me-2"></i>Prakiraan 5 Hari Kedepan
+            </h4>
+            <div class="row g-3" id="forecastContainer"></div>
+        </div>
+    </section>
+
+    <!-- SECTION CUACA 5 KOTA BESAR -->
+    <section id="big-cities" class="py-5 bg-light">
+        <div class="container">
+            <h4 class="fw-bold text-navy mb-4 border-bottom pb-2" data-aos="fade-right">
+                <i class="fas fa-city me-2"></i>Cuaca 5 Kota Besar di Indonesia
+            </h4>
+            <div class="row g-4" id="bigCitiesContainer"></div>
+        </div>
+    </section>
+
+    <!-- SECTION CUACA SELURUH KOTA -->
+    <section id="all-cities" class="py-5">
+        <div class="container">
+            <h4 class="fw-bold text-navy mb-4 border-bottom pb-2" data-aos="fade-right">
+                <i class="fas fa-map-marked-alt me-2"></i>Cuaca Seluruh Kota di Indonesia
+            </h4>
+            
+            <div class="row mb-4" data-aos="fade-up">
+                <div class="col-md-6">
+                    <label for="provinceSelect" class="form-label fw-bold">Pilih Provinsi:</label>
+                    <select class="form-select" id="provinceSelect">
+                        <option value="">-- Pilih Provinsi --</option>
+                    </select>
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <button class="btn btn-navy w-100" id="loadProvinceBtn">
+                        <i class="fas fa-search me-2"></i>Tampilkan Cuaca Kota
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-3" id="allCitiesContainer">
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Pilih provinsi untuk menampilkan cuaca di seluruh kota/kabupaten.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION GEMPA BUMI -->
+    <section id="gempa" class="py-5 bg-light">
+        <div class="container">
+            <h4 class="fw-bold text-navy mb-4 border-bottom pb-2" data-aos="fade-right">
+                <i class="fas fa-house-damage me-2"></i>Informasi Gempa Bumi Terkini
+            </h4>
+            <div class="table-responsive bg-white rounded shadow-sm" data-aos="fade-up">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="bg-navy text-white">
+                        <tr>
+                            <th>Waktu</th>
+                            <th>Magnitudo</th>
+                            <th>Kedalaman</th>
+                            <th>Lokasi</th>
+                            <th>Potensi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gempaTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION TENTANG APLIKASI -->
+    <section id="tentang" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6" data-aos="fade-right">
+                    <img src="https://images.unsplash.com/photo-1592210454359-9043f067919b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                         alt="About" class="img-fluid rounded shadow hover-zoom">
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0" data-aos="fade-left">
+                    <h4 class="fw-bold text-navy mb-4 border-bottom pb-2">Tentang Aplikasi</h4>
+                    <p class="lead">Platform informasi cuaca yang dirancang untuk memberikan data akurat dan real-time bagi pengguna di Indonesia.</p>
+                    <p>Kami mengintegrasikan API dari Open-Meteo untuk memberikan data suhu, kelembapan, kecepatan angin, dan prakiraan cuaca hingga 5 hari kedepan. Aplikasi ini dibangun dengan teknologi HTML, CSS, Bootstrap, dan JavaScript modern.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Data Real-Time</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Tampilan Responsif</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Peta Interaktif</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION FAQ -->
+    <section id="faq" class="py-5 bg-light">
+        <div class="container">
+            <h4 class="fw-bold text-navy mb-4 border-bottom pb-2 text-center" data-aos="fade-up">
+                Pertanyaan Umum (FAQ)
+            </h4>
+            <div class="accordion" id="faqAccordion" data-aos="fade-up">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            Apakah data cuaca ini akurat?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Ya, kami menggunakan API Open-Meteo yang menyediakan data meteorologi global dengan akurasi tinggi.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Apakah aplikasi ini gratis?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Tentu, aplikasi ini 100% gratis untuk digunakan oleh siapa saja.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Berapa lama prakiraan cuaca yang disediakan?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Kami menyediakan prakiraan cuaca hingga 5 hari kedepan.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION CONTACT FORM (WhatsApp) -->
+    <section id="kontak" class="py-5">
+        <div class="container">
+            <h4 class="fw-bold text-navy mb-4 border-bottom pb-2 text-center" data-aos="fade-up">
+                Hubungi Kami
+            </h4>
+            <div class="row justify-content-center">
+                <div class="col-md-8" data-aos="zoom-in">
+                    <form id="contactForm" class="shadow p-4 rounded bg-white">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="name" placeholder="Masukkan nama Anda" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Alamat Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="contoh@email.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Pesan</label>
+                            <textarea class="form-control" id="message" rows="4" placeholder="Tulis pesan Anda di sini..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 fw-bold">
+                            <i class="fab fa-whatsapp me-2"></i> Kirim via WhatsApp
+                        </button>
+                        <p class="text-muted small text-center mt-3 mb-0">
+                            <i class="fas fa-info-circle me-1"></i> Pesan akan langsung diteruskan ke WhatsApp kami.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold"><i class="fas fa-cloud-sun me-2"></i>BMKG</h5>
+                    <p class="small text-white-50">Badan Meteorologi, Klimatologi, dan Geofisika. Jl. Angkasa I No.2 Kemayoran, Jakarta Pusat.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">Tautan Cepat</h5>
+                    <ul class="list-unstyled small">
+                        <li><a href="#prakiraan" class="text-white-50 text-decoration-none">Prakiraan Cuaca</a></li>
+                        <li><a href="#gempa" class="text-white-50 text-decoration-none">Info Gempa Bumi</a></li>
+                        <li><a href="#tentang" class="text-white-50 text-decoration-none">Tentang Aplikasi</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">Kontak Kami</h5>
+                    <p class="small text-white-50 mb-1"><i class="fab fa-whatsapp me-2"></i> 0882-1968-7504</p>
+                    <p class="small text-white-50 mb-1"><i class="fas fa-envelope me-2"></i> info@bmkg.go.id</p>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center small text-white-50">
+                &copy; 2023 BMKG. All Rights Reserved. | Dibuat untuk keperluan demonstrasi.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+/* =====================================================
+   VARIABEL WARNA BMKG
+   ===================================================== */
+:root {
+    --bmkg-navy: #003366;
+    --bmkg-blue: #00509e;
+    --bmkg-yellow: #ffcc00;
+    --bmkg-red: #cc0000;
+    --scroll-progress: 0%;
+}
+
+/* =====================================================
+   GLOBAL STYLES
+   ===================================================== */
+* {
+    scroll-behavior: smooth;
+}
+
+html {
+    scroll-padding-top: 80px; /* Offset untuk fixed navbar */
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    overflow-x: hidden;
+    padding-top: 0; /* Akan di-set dinamis oleh JavaScript */
+}
+
+/* Warna Kustom */
+.bg-navy { background-color: var(--bmkg-navy) !important; }
+.text-navy { color: var(--bmkg-navy) !important; }
+.btn-navy { 
+    background-color: var(--bmkg-navy); 
+    color: white; 
+    border: none; 
+    transition: 0.3s; 
+}
+.btn-navy:hover { 
+    background-color: var(--bmkg-blue); 
+    color: white; 
+    transform: translateY(-2px); 
+}
+
+/* =====================================================
+   TOP BAR
+   ===================================================== */
+.top-bar { 
+    font-size: 0.85rem; 
+    border-bottom: 3px solid var(--bmkg-yellow); 
+}
+
+/* =====================================================
+   LOGO BMKG
+   ===================================================== */
+.logo-bmkg {
+    height: 50px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/* =====================================================
+   NAVBAR FIXED-TOP DENGAN SCROLLSPY STYLE
+   ===================================================== */
+#mainNav {
+    transition: all 0.4s ease;
+    padding: 12px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1030;
+    background-color: var(--bmkg-navy) !important;
+}
+
+/* Progress Bar di Atas Navbar */
+#mainNav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: var(--scroll-progress, 0%);
+    background: linear-gradient(90deg, var(--bmkg-yellow), #ff9900);
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+    z-index: 10;
+}
+
+/* Navbar saat di-scroll (mengecil + shadow) */
+#mainNav.scrolled {
+    padding: 5px 0;
+    background-color: rgba(0, 51, 102, 0.98) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Nav-link default */
+#navMenu .nav-link {
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efek Hover - Garis Kuning Muncul */
+#navMenu .nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: var(--bmkg-yellow);
+    transition: all 0.4s ease;
+    transform: translateX(-50%);
+    border-radius: 3px 3px 0 0;
+}
+
+#navMenu .nav-link:hover::before {
+    width: 70%;
+}
+
+/* Nav-link ACTIVE (ScrollSpy) */
+#navMenu .nav-link.active {
+    color: var(--bmkg-yellow) !important;
+    font-weight: 700;
+}
+
+#navMenu .nav-link.active::before {
+    width: 100%;
+    background: var(--bmkg-yellow);
+    box-shadow: 0 -2px 10px rgba(255, 204, 0, 0.6);
+}
+
+/* Animasi Pulse pada link aktif */
+@keyframes pulseGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 15px rgba(255, 204, 0, 0.9);
+    }
+}
+
+#navMenu .nav-link.active {
+    animation: pulseGlow 2s infinite;
+}
+
+/* =====================================================
+   HERO SECTION DENGAN PARALLAX
+   ===================================================== */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 100px 0 60px;
+}
+
+.hero-parallax-bg {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background-image: url('https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    will-change: transform;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(0, 51, 102, 0.95) 0%, 
+        rgba(0, 80, 158, 0.85) 50%, 
+        rgba(0, 51, 102, 0.9) 100%);
+    z-index: 1;
+}
+
+.hero-floating {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.cloud {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.15);
+    will-change: transform;
+}
+
+.cloud-1 { top: 15%; left: 5%; font-size: 5rem; }
+.cloud-2 { top: 30%; right: 10%; font-size: 7rem; }
+.cloud-3 { top: 60%; left: 15%; font-size: 4rem; }
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+}
+
+.hero-weather-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-weather-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+}
+
+.hero-weather-icon {
+    font-size: 6rem;
+    color: var(--bmkg-navy);
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.scroll-down {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    animation: bounceDown 2s infinite;
+}
+
+.scroll-down a {
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.scroll-down a:hover {
+    opacity: 1;
+}
+
+@keyframes bounceDown {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+}
+
+/* =====================================================
+   HOVER EFFECT PADA GAMBAR
+   ===================================================== */
+.hover-zoom { 
+    transition: transform 0.5s ease; 
+}
+.hover-zoom:hover { 
+    transform: scale(1.05); 
+}
+
+/* =====================================================
+   WEATHER CARDS (Hasil Pencarian)
+   ===================================================== */
+.weather-card-bmkg {
+    background: white;
+    border-radius: 8px;
+    border-left: 5px solid var(--bmkg-blue);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.weather-card-bmkg:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.weather-icon-lg { 
+    font-size: 3rem; 
+    color: var(--bmkg-blue); 
+}
+
+/* =====================================================
+   FORECAST CARDS
+   ===================================================== */
+.forecast-card-bmkg {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-bottom: 3px solid var(--bmkg-navy);
+    transition: all 0.3s;
+}
+.forecast-card-bmkg:hover {
+    background-color: #f0f8ff;
+    transform: scale(1.05);
+    border-bottom-color: var(--bmkg-yellow);
+}
+
+/* =====================================================
+   BIG CITIES CARDS
+   ===================================================== */
+.city-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s;
+    border-top: 3px solid var(--bmkg-blue);
+}
+.city-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* =====================================================
+   TABEL GEMPA
+   ===================================================== */
+.table thead th {
+    border-bottom: 2px solid var(--bmkg-navy);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+/* =====================================================
+   SECTION CUACA SELURUH KOTA
+   ===================================================== */
+#all-cities .city-card {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+#all-cities .city-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+#provinceSelect {
+    padding: 12px 15px;
+    border: 2px solid var(--bmkg-navy);
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+#loadProvinceBtn {
+    padding: 12px 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* =====================================================
+   RESPONSIVE ADJUSTMENTS
+   ===================================================== */
+@media (max-width: 991px) {
+    .hero-section {
+        min-height: auto;
+        padding: 100px 0 60px;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero-weather-card {
+        margin-top: 30px;
+    }
+    
+    /* Mobile Navbar Active Style */
+    #navMenu .nav-link {
+        padding: 12px 20px;
+        border-left: 3px solid transparent;
+    }
+    
+    #navMenu .nav-link::before {
+        display: none;
+    }
+    
+    #navMenu .nav-link.active {
+        background-color: rgba(255, 204, 0, 0.15);
+        border-left: 3px solid var(--bmkg-yellow);
+        padding-left: 25px;
+        animation: none;
+    }
+    
+    #mainNav {
+        padding: 10px 0;
+    }
+    
+    #mainNav.scrolled {
+        padding: 8px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .display-4 { font-size: 1.8rem; }
+    .display-3 { font-size: 2.5rem; }
+    
+    .hero-weather-card {
+        padding: 20px;
+    }
+    
+    .hero-weather-icon {
+        font-size: 4rem;
+    }
+    
+    .weather-card-bmkg { margin-bottom: 20px; }
+    
+    .logo-bmkg { height: 35px; }
+    header h4 { font-size: 1.1rem; }
+    header p { font-size: 0.75rem; }
+    
+    #all-cities .col-6 {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    
+    #all-cities .city-card { padding: 12px; }
+    #all-cities .city-card h4 { font-size: 1.2rem; }
+    
+    .hero-content .row h3 { font-size: 1.3rem; }
+    .hero-content .row small { font-size: 0.7rem; }
+    
+    .hero-content .btn-lg {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-content h1 { font-size: 1.7rem; }
+    .hero-content .lead { font-size: 0.95rem; }
+    .scroll-down { display: none; }
+}
+
+/* =====================================================
+   CUSTOM SCROLLBAR
+   ===================================================== */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bmkg-navy);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bmkg-blue);
+}
